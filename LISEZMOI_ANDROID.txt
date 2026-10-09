@@ -1,0 +1,31 @@
+ASTRES ZODIAQUE - ANDROID
+=========================
+
+Un APK ne peut pas etre compile sur Windows ni dans cet environnement : la
+chaine Android (Buildozer / python-for-android) exige Linux et ~10 Go.
+Deux voies :
+
+VOIE 1 - APK via GitHub (sans rien installer)
+1. Creez un depot GitHub (gratuit) et envoyez-y TOUT le contenu de ce dossier
+   (y compris le dossier .github).
+2. Onglet "Actions" > "Build Android APK" > "Run workflow".
+3. Au bout de 20-40 min, telechargez l'artefact "AstresZodiaque-apk" (fichier .apk).
+4. Sur le telephone : copiez l'APK, ouvrez-le, autorisez "Installer des
+   applications inconnues". Fonctionne hors ligne (ephemeride incluse).
+
+VOIE 2 - Compiler sur Linux / WSL2 (Ubuntu)
+   sudo apt install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config \
+        zlib1g-dev libncurses5-dev libtinfo5 cmake libffi-dev libssl-dev
+   pip install buildozer cython==0.29.37 skyfield numpy jplephem
+   python -c "from skyfield.api import Loader; Loader('donnees_skyfield')('de440s.bsp')"
+   buildozer -v android debug        # APK dans ./bin/
+
+VOIE RAPIDE - sans APK : Termux (F-Droid)
+   pkg install python python-numpy
+   pip install skyfield jplephem
+   python astres_zodiaque_skyfield.py
+   (version console d'origine, avec la question Y/N ; l'ephemeride se telecharge
+   au 1er lancement)
+
+Remarque : ce projet n'a pas pu etre teste ici sur un telephone. Si la
+compilation echoue, envoyez-moi le journal d'erreur de l'onglet Actions.
